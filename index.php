@@ -18,9 +18,9 @@
   <style>
     .box
     {
-    max-width:600px;
-    width:100%;
-    margin: 0 auto;;
+        max-width:600px;
+        width:100%;
+        margin: 0 auto;;
     }
   </style>
  </head>
@@ -32,7 +32,7 @@
    <form id="upload_csv" method="post" enctype="multipart/form-data">
     <div class="col-md-3">
      <br />
-     <label>Import CSV file with the headers below to compute</label>
+     <label>Import CSV file to compute compensation.</label>
     </div>  
     <div class="col-md-4">  
         <input type="file" name="csv_file" id="csv_file" accept=".csv" style="margin-top:15px;" />
@@ -54,12 +54,12 @@
        <th>Distance (km)</th>
        <th>Workdays</th>
        <th>Compensation (€)</th>
+       <th>Payment Date</th>
       </tr>
      </thead>
     </table>
 
     <button onclick="exportTableToExcel('data-table', 'computed-data')" class="btn btn-primary">Export Table To Excel File</button>
-
    </div>
   </div>
  </body>
@@ -91,7 +91,8 @@ $(document).ready(function()
       { data : "transport_type" },
       { data : "distance_amt" },
       { data : "workdays_amt" },
-      { data : "compensation_amt"}   
+      { data : "compensation_amt"},
+      { data : "payment_date"}   
      ]
     });
    }

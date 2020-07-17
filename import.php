@@ -7,6 +7,8 @@ if(!empty($_FILES['csv_file']['name']))
      
     fgetcsv($file_data);
 
+    $today = date("j-n-Y");
+
     while($row = fgetcsv($file_data))
     {
         $data[] = array(
@@ -15,7 +17,8 @@ if(!empty($_FILES['csv_file']['name']))
         'transport_type' => $row[2],
         'distance_amt'  => number_format($row[3],2),
         'workdays_amt'  => number_format($row[4],2),
-        'compensation_amt' => computeamt($row[2],$row[3],$row[4])
+        'compensation_amt' => computeamt($row[2],$row[3],$row[4]),
+        'payment_date' => $today
         );
     }
     echo json_encode($data);
@@ -27,11 +30,7 @@ if(!empty($_FILES['csv_file']['name']))
           $result = json_decode($content, true); 
         
         $res = (object)$result;
-/*
-        echo $transtype;
-        echo $distval;
-        echo $wrkday;
-*/
+
         //$name = $res->name;
 /*
         $bkamt = 0.33;
@@ -46,16 +45,16 @@ if(!empty($_FILES['csv_file']['name']))
                 switch($objid)
                 {
                     case 1:
-                    $trn = $obj['base_compensation_per_km'];                     
+                        $trn = $obj['base_compensation_per_km'];                     
                     break;
                     case 2:                        
-                    $car = $obj['base_compensation_per_km'];                      
+                        $car = $obj['base_compensation_per_km'];                      
                     break;
                     case 3:                    
-                     $bkamts = $obj['base_compensation_per_km'];                  
+                        $bkamts = $obj['base_compensation_per_km'];                  
                     break;
                     case 4:
-                     $bustr = $obj['base_compensation_per_km'];                     
+                        $bustr = $obj['base_compensation_per_km'];                     
                     break;                                                            
                 }
                           
@@ -63,20 +62,43 @@ if(!empty($_FILES['csv_file']['name']))
             switch($transtype)
             {
                 case "TRAIN":                
-                $amt = $trn * $distval * $wrkday;
+                    //$amt = $trn * $distval * $wrkday;
+                    if (($distval >= isset($obj['exceptons']['min_km'])) 
+                        && ($distval <= isset($obj['exceptons']['max_km'])))   
+                    {
+                       
+                        $amt = $trn * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                    }
+                    else
+                    {
+                        $amt = $trn * $distval * $wrkday;
+                    } 
                 break;  
-                case "CAR":                
-                $amt = $car * $distval * $wrkday;
+                case "CAR": 
+                //$amt = computeExp($distval,$car)               
+                  //  $amt = $car * $distval * $wrkday;
+
+                    if (($distval >= isset($obj['exceptons']['min_km'])) 
+                        && ($distval <= isset($obj['exceptons']['max_km'])))   
+                        {
+                           
+                            $amt = $car * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                        }
+                        else
+                        {
+                            $amt = $car * $distval * $wrkday;
+                        }  
                 break; 
                 case "BIKE":
                 //echo $distval;
                 
-                  if (($distval >= isset($obj['exceptons']['min_km'])) && ($distval <= isset($obj['exceptons']['max_km'])))   
+                  if (($distval >= isset($obj['exceptons']['min_km'])) 
+                    && ($distval <= isset($obj['exceptons']['max_km'])))   
                         {
                            
                             $amt = $bkamts * isset($obj['exceptions']['factor']) * $distval * $wrkday;
                         }
-                        else
+                    else
                         {
                             $amt = $bkamts * $distval * $wrkday;
                         }   
@@ -95,15 +117,46 @@ if(!empty($_FILES['csv_file']['name']))
                 break;
                 
                 case "BUS":    
-                $amt = $bustr * $distval * $wrkday;
+                    //$amt = $bustr * $distval * $wrkday;
+                    if (($distval >= isset($obj['exceptons']['min_km'])) 
+                    && ($distval <= isset($obj['exceptons']['max_km'])))   
+                    {
+                       
+                        $amt = $bustr * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                    }
+                    else
+                    {
+                        $amt = $bustr * $distval * $wrkday;
+                    } 
                 break;                                                                       
                 default:
-                $amt = 0 ;
+                    $amt = 0 ;
                 break;
-            }                        
+
+                
+            }   
+                            /*
+                function computeExcp($distval, $trtype)
+                {
+                        if (($distval >= isset($obj['exceptons']['min_km'])) && ($distval <= isset($obj['exceptons']['max_km'])))   
+                    {
+                       
+                        $amt = $bustr * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                    }
+                    else
+                    {
+                        $amt = $bustr * $distval * $wrkday;
+                    } 
+            
+                }
+
+                */
+
         }                    
        
-        return number_format($amt,2);
+        return number_format(($amt * 4),2);
     }
+
+
 
 ?>
