@@ -20,6 +20,7 @@ Views
 index.php - Renders the imported csv file as a DataTable including the additional columns for payment date and compensation amount. 
 
 export.js
+
     function exportTableToExcel - JavaScript function that prepares the rendererd table as an excel file to be downloaded by the user.
 
 
