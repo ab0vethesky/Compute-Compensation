@@ -60,7 +60,7 @@
      </thead>
     </table>
 
-    <button onclick="exportTableToExcel('data-table', 'computed-data')" class="btn btn-primary">Export Table To Excel File</button>
+    <button onclick="exportTableToExcel('data-table', 'computed-data'+Date.now())" class="btn btn-primary">Export Table To Excel File</button>
    </div>
   </div>
  </body>
