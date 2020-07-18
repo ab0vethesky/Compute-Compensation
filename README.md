@@ -13,12 +13,13 @@ Funcions
 
 import.php - Does the file import processing.
 
-              function computeamt - Takes values from the imported csv file and computes the compensation based on the values returned from the api.
+    function computeamt - Takes values from the imported csv file and computes the compensation based on the values returned from the api.
 
 Views
 
 index.php - Renders the imported csv file as a DataTable including the additional columns for payment date and compensation amount. 
 
-             function exportTableToExcel - JavaScript function that prepares the rendererd table as an excel file to be downloaded by the user.
+export.js
+    function exportTableToExcel - JavaScript function that prepares the rendererd table as an excel file to be downloaded by the user.
 
 
