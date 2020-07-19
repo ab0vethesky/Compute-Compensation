@@ -30,13 +30,7 @@ if(!empty($_FILES['csv_file']['name']))
           $result = json_decode($content, true); 
         
         $res = (object)$result;
-
-        //$name = $res->name;
-/*
-        $bkamt = 0.33;
-        $bustr = 0.25;
-        $car = 0.10;
-        */
+ 
         foreach($res as $obj)
         {
             
@@ -62,72 +56,41 @@ if(!empty($_FILES['csv_file']['name']))
             switch($transtype)
             {
                 case "TRAIN":                
-                    //$amt = $trn * $distval * $wrkday;
-                    if (($distval >= isset($obj['exceptons']['min_km'])) 
-                        && ($distval <= isset($obj['exceptons']['max_km'])))   
-                    {
-                       
-                        $amt = $trn * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
-                    }
-                    else
-                    {
-                        $amt = $trn * $distval * $wrkday * 2;
-                    } 
+                    $comp = $trn; 
+                    $minkm = isset($obj['exceptons']['min_km']);
+                    $maxkm = isset($obj['exceptons']['max_km']);
+                    $factor = isset($obj['exceptions']['factor']);
+                    $wk = $wrkday;
+                    $amt = computeExcp($comp,$minkm,$maxkm,$distval,$wk,$factor);
                 break;  
                 case "CAR": 
-                //$amt = computeExp($distval,$car)               
-                  //  $amt = $car * $distval * $wrkday;
-
-                    if (($distval >= isset($obj['exceptons']['min_km'])) 
-                        && ($distval <= isset($obj['exceptons']['max_km'])))   
-                        {
-                           
-                            $amt = $car * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
-                        }
-                        else
-                        {
-                            $amt = $car * $distval * $wrkday * 2;
-                        }  
+                    $comp = $car; 
+                    $minkm = isset($obj['exceptons']['min_km']);
+                    $maxkm = isset($obj['exceptons']['max_km']);
+                    $factor = isset($obj['exceptions']['factor']);
+                    $wk = $wrkday;
+                    $amt = computeExcp($comp,$minkm,$maxkm,$distval,$wk,$factor);
                 break; 
                 case "BIKE":
-                //echo $distval;
-                
-                  if (($distval >= isset($obj['exceptons']['min_km'])) 
-                    && ($distval <= isset($obj['exceptons']['max_km'])))   
-                        {
-                           
-                            $amt = $bkamts * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
-                        }
-                    else
-                        {
-                            $amt = $bkamts * $distval * $wrkday * 2;
-                        }   
-                        
-                /*
-                if (($distval >= 5 ) && ($distval <= 10))   
-                        {
-                           
-                            $amt = $bkamts * 2 * $distval * $wrkday;
-                        }
-                        else
-                        {
-                            $amt = $bkamts * $distval * $wrkday;
-                        }  
-                        */                             
+ 
+                    $comp = $bkamts; 
+                    $minkm = isset($obj['exceptons']['min_km']);
+                    $maxkm = isset($obj['exceptons']['max_km']);
+                    $factor = isset($obj['exceptions']['factor']);
+                    $wk = $wrkday;
+                    $amt = computeExcp($comp,$minkm,$maxkm,$distval,$wk,$factor);
+                                                   
                 break;
                 
                 case "BUS":    
-                    //$amt = $bustr * $distval * $wrkday;
-                    if (($distval >= isset($obj['exceptons']['min_km'])) 
-                    && ($distval <= isset($obj['exceptons']['max_km'])))   
-                    {
-                       
-                        $amt = $bustr * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
-                    }
-                    else
-                    {
-                        $amt = $bustr * $distval * $wrkday * 2;
-                    } 
+                    
+                    $comp = $bustr; 
+                    $minkm = isset($obj['exceptons']['min_km']);
+                    $maxkm = isset($obj['exceptons']['max_km']);
+                    $factor = isset($obj['exceptions']['factor']);
+                    $wk = $wrkday;
+                    $amt = computeExcp($comp,$minkm,$maxkm,$distval,$wk,$factor);
+                    
                 break;                                                                       
                 default:
                     $amt = 0 ;
@@ -135,28 +98,26 @@ if(!empty($_FILES['csv_file']['name']))
 
                 
             }   
-                            /*
-                function computeExcp($distval, $trtype)
-                {
-                        if (($distval >= isset($obj['exceptons']['min_km'])) && ($distval <= isset($obj['exceptons']['max_km'])))   
-                    {
-                       
-                        $amt = $bustr * isset($obj['exceptions']['factor']) * $distval * $wrkday;
-                    }
-                    else
-                    {
-                        $amt = $bustr * $distval * $wrkday;
-                    } 
-            
-                }
-
-                */
-
+                                               
         }                    
        
         return number_format(($amt * 4),2);
     }
 
+    
+    function computeExcp($comp,$minkm, $maxkm,$distval,$wk,$factor)
+    {
+        if (($distval >= $minkm) && ($distval <= $maxkm))   
+        {
+           
+            $amtt = $comp * $factor * $distval * $wk * 2;
+        }
+        else
+        {
+            $amtt = $comp * $distval * $wk * 2;
+        } 
+        return $amtt;
 
+    }
 
 ?>
