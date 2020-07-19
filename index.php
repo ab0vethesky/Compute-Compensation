@@ -17,10 +17,7 @@
   <script type="text/javascript" src="export.js"></script>
   <script src="dtable.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <style>
 
-
-  </style>
  </head>
  <body>
   <div class="container">
