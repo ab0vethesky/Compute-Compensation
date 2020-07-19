@@ -16,13 +16,10 @@
 
   <script type="text/javascript" src="export.js"></script>
   <script src="dtable.js"></script>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    .box
-    {
-        max-width:600px;
-        width:100%;
-        margin: 0 auto;;
-    }
+
+
   </style>
  </head>
  <body>
