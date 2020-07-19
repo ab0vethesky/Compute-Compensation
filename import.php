@@ -67,11 +67,11 @@ if(!empty($_FILES['csv_file']['name']))
                         && ($distval <= isset($obj['exceptons']['max_km'])))   
                     {
                        
-                        $amt = $trn * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                        $amt = $trn * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
                     }
                     else
                     {
-                        $amt = $trn * $distval * $wrkday;
+                        $amt = $trn * $distval * $wrkday * 2;
                     } 
                 break;  
                 case "CAR": 
@@ -82,11 +82,11 @@ if(!empty($_FILES['csv_file']['name']))
                         && ($distval <= isset($obj['exceptons']['max_km'])))   
                         {
                            
-                            $amt = $car * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                            $amt = $car * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
                         }
                         else
                         {
-                            $amt = $car * $distval * $wrkday;
+                            $amt = $car * $distval * $wrkday * 2;
                         }  
                 break; 
                 case "BIKE":
@@ -96,11 +96,11 @@ if(!empty($_FILES['csv_file']['name']))
                     && ($distval <= isset($obj['exceptons']['max_km'])))   
                         {
                            
-                            $amt = $bkamts * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                            $amt = $bkamts * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
                         }
                     else
                         {
-                            $amt = $bkamts * $distval * $wrkday;
+                            $amt = $bkamts * $distval * $wrkday * 2;
                         }   
                         
                 /*
@@ -122,11 +122,11 @@ if(!empty($_FILES['csv_file']['name']))
                     && ($distval <= isset($obj['exceptons']['max_km'])))   
                     {
                        
-                        $amt = $bustr * isset($obj['exceptions']['factor']) * $distval * $wrkday;
+                        $amt = $bustr * isset($obj['exceptions']['factor']) * $distval * $wrkday * 2;
                     }
                     else
                     {
-                        $amt = $bustr * $distval * $wrkday;
+                        $amt = $bustr * $distval * $wrkday * 2;
                     } 
                 break;                                                                       
                 default:
