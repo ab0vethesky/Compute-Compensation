@@ -48,13 +48,19 @@
        <th>Transport Type</th>
        <th>Distance (km)</th>
        <th>Workdays</th>
-       <th>Compensation (€)</th>
+       <th>**Compensation (€)</th>
        <th>Payment Date</th>
       </tr>
      </thead>
     </table>
 
     <button onclick="exportTableToExcel('data-table', 'computed-data'+Date.now())" class="btn btn-primary">Export Table To Excel File</button>
+   </div>
+   <div>
+       -
+   </div>
+   <div>
+       <b>** Compensation = (Distance * 2) * (Base Compensation per km * {exception factor} * Workdays * 4</b>
    </div>
   </div>
  </body>
