@@ -60,7 +60,7 @@
        -
    </div>
    <div>
-       <b>** Compensation = (Distance * 2) * (Base Compensation per km * {exception factor} * Workdays * 4</b>
+       <b>** Compensation = (Distance * 2) * (Base Compensation per km * {exception factor}) * (Workdays * 4)</b>
    </div>
   </div>
  </body>
