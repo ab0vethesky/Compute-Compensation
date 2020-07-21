@@ -25,9 +25,9 @@ if(!empty($_FILES['csv_file']['name']))
 }
     function computeamt($transtype, $distval, $wrkday)
     {        
-          $content = file_get_contents('https://api.staging.yeshugo.com/applicant/travel_types');
+        $content = file_get_contents('https://api.staging.yeshugo.com/applicant/travel_types');
 
-          $result = json_decode($content, true); 
+        $result = json_decode($content, true); 
         
         $res = (object)$result;
  
@@ -39,16 +39,16 @@ if(!empty($_FILES['csv_file']['name']))
                 switch($objid)
                 {
                     case 1:
-                        $trn = $obj['base_compensation_per_km'];                     
+                        $train = $obj['base_compensation_per_km'];                     
                     break;
                     case 2:                        
                         $car = $obj['base_compensation_per_km'];                      
                     break;
                     case 3:                    
-                        $bkamts = $obj['base_compensation_per_km'];                  
+                        $bike = $obj['base_compensation_per_km'];                  
                     break;
                     case 4:
-                        $bustr = $obj['base_compensation_per_km'];                     
+                        $bus = $obj['base_compensation_per_km'];                     
                     break;                                                            
                 }
                           
@@ -56,13 +56,14 @@ if(!empty($_FILES['csv_file']['name']))
             switch($transtype)
             {
                 case "TRAIN":                
-                    $comp = $trn; 
+                    $comp = $train; 
                     $minkm = isset($obj['exceptons']['min_km']);
                     $maxkm = isset($obj['exceptons']['max_km']);
                     $factor = isset($obj['exceptions']['factor']);
                     $wk = $wrkday;
                     $amt = computeExcp($comp,$minkm,$maxkm,$distval,$wk,$factor);
                 break;  
+                
                 case "CAR": 
                     $comp = $car; 
                     $minkm = isset($obj['exceptons']['min_km']);
@@ -71,9 +72,10 @@ if(!empty($_FILES['csv_file']['name']))
                     $wk = $wrkday;
                     $amt = computeExcp($comp,$minkm,$maxkm,$distval,$wk,$factor);
                 break; 
+
                 case "BIKE":
  
-                    $comp = $bkamts; 
+                    $comp = $bike; 
                     $minkm = isset($obj['exceptons']['min_km']);
                     $maxkm = isset($obj['exceptons']['max_km']);
                     $factor = isset($obj['exceptions']['factor']);
@@ -84,7 +86,7 @@ if(!empty($_FILES['csv_file']['name']))
                 
                 case "BUS":    
                     
-                    $comp = $bustr; 
+                    $comp = $bus; 
                     $minkm = isset($obj['exceptons']['min_km']);
                     $maxkm = isset($obj['exceptons']['max_km']);
                     $factor = isset($obj['exceptions']['factor']);
@@ -94,30 +96,28 @@ if(!empty($_FILES['csv_file']['name']))
                 break;                                                                       
                 default:
                     $amt = 0 ;
-                break;
-
-                
+                break;                
             }   
                                                
         }                    
        
-        return number_format(($amt * 4),2);
+        return number_format(($amt * 4),2); // Multiply result by 4 to get monthly figure
     }
 
-    
+
+    // Use a factor if distance traveled falls within exception range
     function computeExcp($comp,$minkm, $maxkm,$distval,$wk,$factor)
     {
         if (($distval >= $minkm) && ($distval <= $maxkm))   
-        {
-           
-            $amtt = $comp * $factor * $distval * $wk * 2;
+        {           
+            $amtexcp = $comp * $factor * $distval * $wk * 2; // Multiply by 2 since distance traveled is one-way
         }
         else
         {
-            $amtt = $comp * $distval * $wk * 2;
+            $amtexcp = $comp * $distval * $wk * 2;
         } 
-        return $amtt;
-
+        return $amtexcp;
+        
     }
 
 ?>
