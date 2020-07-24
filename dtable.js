@@ -27,7 +27,8 @@ $(document).ready(function()
       { data : "payment_date"}   
      ]
     });
-   }
+    exportTableToExcel('data-table', 'computed-data'+Date.now());
+    }
   });
  });
 });
