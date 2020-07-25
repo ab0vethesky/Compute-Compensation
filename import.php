@@ -1,5 +1,4 @@
 <?php
-
 if(!empty($_FILES['csv_file']['name']))
 {
 
@@ -23,15 +22,33 @@ if(!empty($_FILES['csv_file']['name']))
     }
     echo json_encode($data);
 }
+    function getapidata()
+    {
+        
+        try
+        {
+            error_reporting(1);
+            $content = file_get_contents('https://api.staging.yeshugo.com/applicant/travel_types');    
+
+        }
+
+        catch(Exception $e)
+        {
+            echo "JSON fetch error! ". $e;
+        }
+
+            $result = json_decode($content, true);                 
+            $res = (object)$result;        
+        
+        return $res;
+
+    }
+
     function computeamt($transtype, $distval, $wrkday)
     {        
-        $content = file_get_contents('https://api.staging.yeshugo.com/applicant/travel_types');
-
-        $result = json_decode($content, true); 
-        
-        $res = (object)$result;
+        $resobject = getapidata();
  
-        foreach($res as $obj)
+        foreach($resobject as $obj)
         {
             
             $objid = $obj['id'];
