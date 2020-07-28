@@ -27,8 +27,10 @@ if(!empty($_FILES['csv_file']['name']))
         
         try
         {
-            error_reporting(1);
-            $content = file_get_contents('https://api.staging.yeshugo.com/applicant/travel_types');    
+           // error_reporting(E_ALL);
+            $content = file_get_contents('https://');  
+            $result = json_decode($content, true);                 
+            $res = (object)$result;   
 
         }
 
@@ -36,10 +38,7 @@ if(!empty($_FILES['csv_file']['name']))
         {
             echo "JSON fetch error! ". $e;
         }
-
-            $result = json_decode($content, true);                 
-            $res = (object)$result;        
-        
+                           
         return $res;
 
     }
