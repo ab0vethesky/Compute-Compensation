@@ -28,7 +28,7 @@ if(!empty($_FILES['csv_file']['name']))
         try
         {
            // error_reporting(E_ALL);
-            $content = file_get_contents('https://');  
+            $content = file_get_contents('https://api.staging.yeshugo.com/applicant/travel_types');
             $result = json_decode($content, true);                 
             $res = (object)$result;   
 
